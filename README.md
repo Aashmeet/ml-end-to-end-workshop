@@ -25,10 +25,46 @@ that Amazon SageMaker provides.
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and 
 will execute these steps for each real-time inference request.
 
+
+# Notebook setup
+Download the files from S3 bucket .
+Launching a Jupyter Notebook Server using Amazon SageMaker
+1.	Sign into the AWS Management Console https://console.aws.amazon.com/.
+2.	In the upper-right corner of the AWS Management Console, confirm you are in the desired AWS region (e.g., N. Virginia).
+3.	Click on Amazon SageMaker from the list of all services.  This will bring you to the Amazon SageMaker console homepage.
+4.	To create a new Jupyter notebook instance, go to Notebook instances, and click the Create notebook instance button at the top of the browser window.
+5.	Type [First Name]-[Last Name]-Lab-Server into the Notebook instance name text box, select <<instance type>> into the Notebook instance type.
+6.	In the resulting modal popup, choose Create a new role, and select None under the S3 Buckets you specify – optional. Click and Create role.
+7.	You will be taken back to the Create Notebook instance page, click Create notebook instance. This will launch a <<instance type>> instance running the Amazon Deep Learning AMI. 
+  
+  
+  Accessing the Jupyter Notebook Instance
+1.	Make sure that the server status is InService. This will take a few minutes.
+2.	We are going to log on to the server by launching a terminal console. Click New and select Terminal. This will open up the terminal on a new browser tab.
+2.	Use following commands to make a new directory
+
+cd SageMaker
+
+mkdir SydneySummit
+
+3.	To download all the lab files from S3, type the following command
+
+ cd SydneySummit
+
+
+wget https://s3.amazonaws.com/aash_lab/sa_ml_tf_lab.tar.gz
+
+4.	Go back to the previous browser tab ,and you will see two notebooks
+  
+  Lab 1 Car Evaluation Data Engineering.ipynb
+  Lab 2 - Training and Inference Pipeline.ipynb
+
+
 # Data Engineering
 
 
 Start a notebook instance and execute it 
+
 
 
 
