@@ -57,8 +57,12 @@ wget https://s3.amazonaws.com/aash_lab/sa_ml_tf_lab.tar.gz
 4.	Go back to the previous browser tab ,and you will see two notebooks
   
   Lab 1 Car Evaluation Data Engineering.ipynb
-  Lab 2 - Training and Inference Pipeline.ipynb
+  
+  Lab 2 -Training and Inference Pipeline.ipynb
 
+
+
+All the instructions for the lab are in the Jupyter notebooks .
 
 # Data Engineering
 
