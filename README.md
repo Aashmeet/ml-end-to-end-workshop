@@ -67,7 +67,8 @@ All the instructions for the lab are in the Jupyter notebooks .
 # Data Engineering
 
 
-Start a notebook instance and execute it 
+Start a notebook instance and execute it -
+  Lab 1 Car Evaluation Data Engineering.ipynb
 
 
 
@@ -75,6 +76,8 @@ Start a notebook instance and execute it
 
 
 # Machine Learning Process
+
+Execute the notebook - Lab 2 -Training and Inference Pipeline.ipynb
 
 
 # Data Pipeline
