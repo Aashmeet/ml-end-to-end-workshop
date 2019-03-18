@@ -24,3 +24,46 @@ This is so the pre-processing steps can be reused during inference for real-time
 that Amazon SageMaker provides. 
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and 
 will execute these steps for each real-time inference request.
+
+
+Data Engineering
+
+Start a notebook instance and execute it 
+
+
+
+
+
+
+
+
+
+Data Pipeline 
+
+## Deployment Steps
+
+####  Step 1. Create a GitHub OAuth Token
+Create your token at [GitHub's Token Settings](https://github.com/settings/tokens), making sure to select scopes of **repo** and **admin:repo_hook**.  After clicking **Generate Token**, make sure to save your OAuth Token in a secure location. The token will not be shown again.
+
+####  Step 2. Launch the Stack
+Click on the **Launch Stack** button below to launch the CloudFormation Stack to set up the SageMaker Pipeline. Before Launching, ensure all architecture, configuration, etc. is set as desired.
+
+**Stack Assumptions:** The pipeline stack assumes the following conditions, and may not function properly if they are not met:
+1. The pipeline stack name is less than 20 characters long
+2. The stack is launched in the US East (N. Virginia) Region (`us-east-1`).
+
+*NOTE: The URL for Launch Stack is automatically generated through a pipeline in one of Stelligent's AWS accounts.*
+
+[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn~sagemaker-stack|turl~https://s3.amazonaws.com/sagemaker-pipeline-src/CodePipeline/pipeline.yaml)
+
+You can launch the same stack using the AWS CLI. Here's an example:
+
+`aws cloudformation create-stack --stack-name YOURSTACKNAME --template-body file:///home/ec2-user/environment/sagemaker-pipeline/CodePipeline/pipeline.yaml --parameters ParameterKey=Email,ParameterValue="youremailaddress@example.com" ParameterKey=GitHubToken,ParameterValue="YOURGITHUBTOKEN12345ab1234234" --capabilities CAPABILITY_NAMED_IAM`
+
+
+<!-- [![Launch CFN stack](https://s3.amazonaws.com/stelligent-training-public/public/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn~DromedaryStack|turl~https://s3.amazonaws.com/stelligent-training-public/master/dromedary-master.json) -->
+
+<!-- TODO: Change above to correct URL!!! -->
+
+####  Step 3. Test and Approve the Deployment
+Once the deployment has passed automated QA testing, before proceeding with the production stage it sends an email notification (via SNS) for manual approval. At this time, you may run any additional tests on the endpoint before approving it to be deployed into production.
