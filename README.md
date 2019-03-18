@@ -25,8 +25,8 @@ that Amazon SageMaker provides.
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and 
 will execute these steps for each real-time inference request.
 
+# Data Engineering
 
-Data Engineering
 
 Start a notebook instance and execute it 
 
@@ -34,11 +34,10 @@ Start a notebook instance and execute it
 
 
 
+# Machine Learning Process
 
 
-
-
-Data Pipeline 
+# Data Pipeline
 
 ## Deployment Steps
 
@@ -63,3 +62,6 @@ Create your token at [GitHub's Token Settings](https://github.com/settings/token
 
 ####  Step 3. Test and Approve the Deployment
 Once the deployment has passed automated QA testing, before proceeding with the production stage it sends an email notification (via SNS) for manual approval. At this time, you may run any additional tests on the endpoint before approving it to be deployed into production.
+
+
+# Machine Learning Inference
