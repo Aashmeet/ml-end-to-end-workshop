@@ -1,7 +1,6 @@
 # Sagemaker Workshop - From Inception to Inference
 
 Welcome to the workshop .This is a self-paced workshop which will guide you through the complete Machine learning process for a Car evaluation use case .
-
 The workshop is using services including Amazon S3, AWS Glue , Amazon Sagemaker ,  AWS Amplify and AWS Cloud9
 
 This workshop is split into three sections :
