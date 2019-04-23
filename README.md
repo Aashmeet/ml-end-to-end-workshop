@@ -6,9 +6,9 @@ The workshop is using services including Amazon S3, AWS Glue , Amazon Sagemaker 
 
 This workshop is split into three sections :
 
-Section 1 : Data Engineerimg 
-Section 2 : Machine Learning
-Section 3 : Inference on a Single Page Application
+#Section 1 : Data Engineerimg 
+#Section 2 : Machine Learning
+#Section 3 : Inference on a Single Page Application
 
 There are some prerequisites to kick-off the workshop as mentioned below :
 
