@@ -94,6 +94,9 @@ Then, we will serialize and capture these artifacts produced by AWS Glue to Amaz
 This is so the pre-processing steps can be reused during inference for real-time requests using the SparkML Serving container that Amazon SageMaker provides. 
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and will execute these steps for each real-time inference request.
 
+Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
+
+Once complete , you will create a Glue job to execute the steps .
 
 ## Machine Learning 
 
@@ -101,3 +104,69 @@ In this section ,we will define the machine learning process to create a model u
 
 Now that we have our data preprocessed in a format that XGBoost recognizes, we can run a simple training job to train a classifier model on our data. We can run this entire process in our Jupyter notebook.This will train the model on the preprocessed data we created earlier. After a few minutes, usually less than 5, the job should complete successfully, and output our model artifacts to the S3 location we specified. Once this is done, we can deploy an inference pipeline that consists of pre-processing, inference and post-processing steps.
 
+Follow the steps in the Jupyter notebook to execute the Machine learning part -this will include setting up a training job to build a model and then create an endpoint to host the model .
+
+## Inference via Single Page Application
+
+In the Jupyter notebook , you have tested the inference on the Machine learning model .
+Now we will build a SPA using AWS Amplify and React and will set up the process to test the inference via the web channel .
+
+To set up the environment for the same , follow the below steps :
+
+###Set up a Cloud9 Workspace
+AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It includes a code editor, debugger, and terminal. Cloud9 comes prepackaged with essential tools for popular programming languages, including JavaScript, Python, PHP, and more, so you don’t need to install files or configure your development machine to start new projects.
+
+Create a new environment
+
+    Go to the Cloud9 web console
+    Select Create environment
+    Name it workshop, and go to the Next step
+    Select Create a new instance for environment (EC2) and pick t2.medium
+    Leave all of the environment settings as they are, and go to the Next step
+    Click Create environment
+
+
+
+Before we begin coding, there are a few things we need to install, update, and configure in the Cloud9 environment.
+
+In the Cloud9 terminal, run the following commands to install and update some software we’ll be using for this workshop:
+
+#### Update the AWS CLI
+pip install --user --upgrade awscli
+
+#### Install and use Node.js v8.10 (to match AWS Lambda)
+nvm install v8.11.0
+nvm alias default v8.11.0
+
+#### Install the AWS Amplify CLI
+npm install -g @aws-amplify/cli
+git clone https://github.com/aws-samples/aws-mobile-appsync-chat-starter-angular.git
+cd aws-mobile-appsync-chat-starter-angular
+
+
+### Download the project from github
+First, clone this repository and navigate to the created folder:
+
+
+### Additional set up:
+Before we start building our UI, we’ll also include Semantic UI components for React to give us components that will help make our interface look a bit nicer.
+
+npm install --save semantic-ui-react
+
+### Set up UI Environment
+
+The next steps will help you set up a project im an environment.The project contains the single page app, API GW/Lambda function. The flow is Amplify SPA -> API GW -> Lambda -> Sagemaker endpoint.
+
+#### Set up Amplify envioronment
+Set up your AWS resources the Amplify CLI:
+amplify init
+
+Create the cloud resources by pushing the changes:
+$ amplify push
+
+Execute amplify add hosting from the project's root folder and follow the prompts to create a S3 bucket (DEV) and/or a CloudFront distribution (PROD).
+
+Build and publish the application
+    $ amplify publish
+    
+Now you should get a url for the application . Access the SPA and invoke the sagemaker endpoint with the values .
