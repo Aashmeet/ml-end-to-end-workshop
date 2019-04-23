@@ -1,45 +1,30 @@
 # Sagemaker Workshop - From Inception to Inference
 
 Welcome to the workshop .This is a self-paced workshop which will guide you through the complete Machine learning process for a Car evaluation use case .
+
+In this workshop we’ll use the Car Evaluation Data Set from UCI’s Machine Learning Repository. Our goal is to predict the acceptability of a specific car, amongst the values of: unacc, acc, good, and vgood. At the core, it is a classification problem and we will train a machine learning model using Amazon SageMaker’s built-in XGBoost algorithm. However, the dataset only contains six categorical string features - buying, maint, doors, persons, lug_boot, and safety and XGBoost can only process data that is in numerical format. Therefore we will pre-process the input data using SparkML StringIndexer followed by OneHotEncoder to convert it to numerical format. We will also apply a post-processing step on the prediction result using SparkML IndexToString to convert our inference output back to their original labels that correspond to the predicted condition of the car.
+
+We’ll write our SparkML pre-processing and post-processing scripts once, and apply them for processing training data using AWS Glue. Then, we will serialize and capture the SparkML artifacts produced by AWS Glue to Amazon S3 using MLeap. This is so that they can be reused during inference for real-time requests using the SparkML Serving container that Amazon SageMaker provides. Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and will execute these steps in order for each real-time inference request.
+
 The workshop is using services including Amazon S3, AWS Glue , Amazon Sagemaker ,  AWS Amplify and AWS Cloud9
 
 This workshop is split into three sections :
 
-#Section 1 : Data Engineerimg 
-#Section 2 : Machine Learning
-#Section 3 : Inference on a Single Page Application
+Section 1 : Data Engineerimg 
+
+Section 2 : Machine Learning
+
+Section 3 : Inference on a Single Page Application
 
 There are some prerequisites to kick-off the workshop as mentioned below :
 
+# Pre-requisites
+## Creating a Notebook Instance
 
-# Creating a Notebook Instance
+We'll start by creating a SageMaker notebook instance, which we will use for the other workshop modules.
 
-We'll start by creating an Amazon S3 bucket that will be used throughout the workshop.  We'll then create a SageMaker notebook instance, which we will use for the other workshop modules.
 
-## 1. Create a S3 Bucket
-
-SageMaker typically uses S3 as storage for data and model artifacts.  In this step you'll create a S3 bucket for this purpose. To begin, sign into the AWS Management Console, https://console.aws.amazon.com/.
-
-### High-Level Instructions
-
-Use the console or AWS CLI to create an Amazon S3 bucket (see step-by-step instructions below if you are unfamiliar with this process). Keep in mind that your bucket's name must be globally unique across all regions and customers. We recommend using a name like `smworkshop-firstname-lastname`. If you get an error that your bucket name already exists, try adding additional numbers or characters until you find an unused name.
-
-<details>
-<summary><strong>Step-by-step instructions (expand for details)</strong></summary><p>
-
-1. In the AWS Management Console, choose **Services** then select **S3** under Storage.
-
-1. Choose **+Create Bucket**
-
-1. Provide a globally unique name for your bucket such as `smworkshop-firstname-lastname`.
-
-1. Select the Region you've chosen to use for this workshop from the dropdown.
-
-1. Choose **Create** in the lower left of the dialog without selecting a bucket to copy settings from.
-
-</p></details>
-
-## 2. Launching the Notebook Instance
+### 1. Launching the Notebook Instance
 
 1. Make sure you are on the AWS Management Console home page.  In the **Find Services** search box, type **SageMaker**.  The search result list will populate with Amazon SageMaker, which you should now click.  This will bring you to the Amazon SageMaker console homepage.
 
@@ -65,7 +50,7 @@ Use the console or AWS CLI to create an Amazon S3 bucket (see step-by-step instr
 
 7. Click **Create notebook instance** at the bottom.
 
-### 3. Accessing the Notebook Instance
+### 2. Accessing the Notebook Instance
 
 1. Wait for the server status to change to **InService**. This will take several minutes, possibly up to ten but likely much less.
 
