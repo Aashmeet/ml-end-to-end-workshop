@@ -101,7 +101,133 @@ Finally, we will deploy the pre-processing, inference, and post-processing steps
 Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
 These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
 
-Once complete , you will create a Glue job to execute the steps . These are steps/cell 1.4 and 1.5 in the 'Car Evaluation' Jupyter notebook .
+Once complete , you will create a Glue job to execute the steps . 
+
+### Glue Job Process 
+If you take a look at the data we downloaded, you’ll notice all of the fields are categorical data in string format, which XGBoost cannot natively handle. In order to utilize SageMaker’s XGBoost, we need to preprocess our data into a series of one hot encoded columns. Apache Spark provides preprocessing pipeline capabilities that we will utilize.
+
+Furthermore, to make our endpoint particularly useful, we also generate a post-processor in this script, which can convert our label indexes back to their original labels. All of these processor artifacts will be saved to S3 for SageMaker’s use later.
+For the Glue Job to be created ,please follow the below steps :
+
+1.	Go to Services -> AWS Glue 
+
+2.	At the left ,under the "ETL" tab , click Jobs 
+
+3.	Click on " Add Job"
+
+4.	Provide the Job details as per below 
+   Name - preprocessing-cars-alias
+   IAM role -Use the IAM role created with Sagemaker 
+   Type - Spark
+   This job runs :  "An existing script that you can provide "
+   ETL Language - Python
+   Script File Name - s3://<<s3 bucket location>>/scripts/preprocessor.py
+   S3 path where the script is stored
+   
+   
+ 5.	Keep the Advanced Properties and Tags as default
+ 6. Click on "Security Configuration ,script libraries and job parameters
+    Python Lobrary path - s3://<<s3 bucket location >>/scripts/python.zip
+    Dependent jars path -s3://<<s3 bucket location>>/scripts/mleap_spark_assembly.jar
+ 7. Add the following Job parameters 
+ 		--s3_input_data_location -  s3://<<s3 bucket location>>/data/car.data
+ 		--s3_model_bucket_prefix -   model
+ 		--s3_model_bucket -   <<s3 bucket name>>
+ 		--s3_output_bucket -  <<s3 bucket name >>
+ 		--s3_output_bucket_prefix  -  output
+ 		
+ 8.	Click on Save Job and Edit Script 
+ 9. Click on "Run Job" . The job will take about 3-4 minutes to finish. 
+
+ 
+ Here is the explanation of what the job is actually doing :
+ While executing the notebook, you downloaded our preprocessor.py script, and we recommend you take the time to explore how Spark pipelines are handled. Let’s take a look at the relevant part of the code where we define and fit our Spark pipeline:
+
+    # Target label
+    catIndexer = StringIndexer(inputCol="cat", outputCol="label")
+
+    labelIndexModel = catIndexer.fit(train)
+    train = labelIndexModel.transform(train)
+
+    converter = IndexToString(inputCol="label", outputCol="cat")
+
+    # Index labels, adding metadata to the label column.
+    # Fit on whole dataset to include all labels in index.
+    buyingIndexer = StringIndexer(inputCol="buying", outputCol="indexedBuying")
+    maintIndexer = StringIndexer(inputCol="maint", outputCol="indexedMaint")
+    doorsIndexer = StringIndexer(inputCol="doors", outputCol="indexedDoors")
+    personsIndexer = StringIndexer(inputCol="persons", outputCol="indexedPersons")
+    lug_bootIndexer = StringIndexer(inputCol="lug_boot", outputCol="indexedLug_boot")
+    safetyIndexer = StringIndexer(inputCol="safety", outputCol="indexedSafety")
+
+
+    # One Hot Encoder on indexed features
+    buyingEncoder = OneHotEncoder(inputCol="indexedBuying", outputCol="buyingVec")
+    maintEncoder = OneHotEncoder(inputCol="indexedMaint", outputCol="maintVec")
+    doorsEncoder = OneHotEncoder(inputCol="indexedDoors", outputCol="doorsVec")
+    personsEncoder = OneHotEncoder(inputCol="indexedPersons", outputCol="personsVec")
+    lug_bootEncoder = OneHotEncoder(inputCol="indexedLug_boot", outputCol="lug_bootVec")
+    safetyEncoder = OneHotEncoder(inputCol="indexedSafety", outputCol="safetyVec")
+
+    # Create the vector structured data (label,features(vector))
+    assembler = VectorAssembler(inputCols=["buyingVec", "maintVec", "doorsVec", "personsVec", "lug_bootVec", "safetyVec"], outputCol="features")
+
+    # Chain featurizers in a Pipeline
+    pipeline = Pipeline(stages=[buyingIndexer, maintIndexer, doorsIndexer, personsIndexer, lug_bootIndexer, safetyIndexer, buyingEncoder, maintEncoder, doorsEncoder, personsEncoder, lug_bootEncoder, safetyEncoder, assembler])
+
+    # Train model.  This also runs the indexers.
+    model = pipeline.fit(train)
+
+This snippet defines both our preprocessor and postprocessor. The preprocessor converts all the training columns from categorical labels into a vector of one-hot encoded columns, while the post-processor converts our label index back to a human readable string.
+
+In addition, it may be helpful to examine the code which allows us to serialize and store our Spark pipeline artifacts in the MLeap format. Because the Spark framework was designed around batch use cases, we need to use MLeap here. MLeap serializes SparkML Pipelines and provides run time for deploying for real-time, low latency use cases. Amazon SageMaker has launched a SparkML Serving container that uses MLEAP to make it easy to use. Let’s look at the code below:
+
+    # Serialize and store via MLeap  
+    SimpleSparkSerializer().serializeToBundle(model, "jar:file:/tmp/model.zip", predictions)
+
+    # Unzipping as SageMaker expects a .tar.gz file but MLeap produces a .zip file.
+    import zipfile
+    with zipfile.ZipFile("/tmp/model.zip") as zf:
+        zf.extractall("/tmp/model")
+
+    # Writing back the content as a .tar.gz file
+    import tarfile
+    with tarfile.open("/tmp/model.tar.gz", "w:gz") as tar:
+        tar.add("/tmp/model/bundle.json", arcname='bundle.json')
+        tar.add("/tmp/model/root", arcname='root')
+
+    s3 = boto3.resource('s3')
+    file_name = args['s3_model_bucket_prefix'] + '/' + 'model.tar.gz'
+    s3.Bucket(args['s3_model_bucket']).upload_file('/tmp/model.tar.gz', file_name)
+
+    os.remove('/tmp/model.zip')
+    os.remove('/tmp/model.tar.gz')
+    shutil.rmtree('/tmp/model')
+
+    # Save postprocessor
+    SimpleSparkSerializer().serializeToBundle(converter, "jar:file:/tmp/postprocess.zip", predictions)
+
+    with zipfile.ZipFile("/tmp/postprocess.zip") as zf:
+        zf.extractall("/tmp/postprocess")
+
+    # Writing back the content as a .tar.gz file
+    import tarfile
+    with tarfile.open("/tmp/postprocess.tar.gz", "w:gz") as tar:
+        tar.add("/tmp/postprocess/bundle.json", arcname='bundle.json')
+        tar.add("/tmp/postprocess/root", arcname='root')
+
+    file_name = args['s3_model_bucket_prefix'] + '/' + 'postprocess.tar.gz'
+    s3.Bucket(args['s3_model_bucket']).upload_file('/tmp/postprocess.tar.gz', file_name)
+
+    os.remove('/tmp/postprocess.zip')
+    os.remove('/tmp/postprocess.tar.gz')
+    shutil.rmtree('/tmp/postprocess')
+
+You’ll notice we unzip this archive and re-archive it into a tar.gz file that SageMaker recognizes.
+
+
+ 
+
 
 ## Part 2 - Machine Learning 
 
