@@ -151,7 +151,7 @@ For the Glue Job to be created ,please follow the below steps :
       
  		--s3_output_bucket_prefix  -  output
       
- 	![Services in Console](./images/Glue Parameters.png)
+ 	![Services in Console](./images/GlueParameters.png)
    
  8.	Click on Save Job and Edit Script 
       ![Services in Console](./images/GlueJob3.png)
