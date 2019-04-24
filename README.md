@@ -118,7 +118,7 @@ For the Glue Job to be created ,please follow the below steps :
 
 2.	At the left ,under the "ETL" tab , click Jobs 
 
-![Services in Console](./images/New Job.png)
+![Services in Console](./images/NewJob.png)
 
 3.	Click on " Add Job"
 
@@ -128,22 +128,22 @@ For the Glue Job to be created ,please follow the below steps :
    Type - Spark
    This job runs :  "An existing script that you can provide "
    ETL Language - Python
-   Script File Name - s3://<<s3 bucket location>>/scripts/preprocessor.py
+   Script File Name - s3:// "s3 bucket name"/scripts/preprocessor.py
    S3 path where the script is stored
    
    ![Services in Console](./images/GlueJob1.png)
    
  5.	Keep the Advanced Properties and Tags as default
  6. Click on "Security Configuration ,script libraries and job parameters
-    Python Lobrary path - s3://<<s3 bucket location >>/scripts/python.zip
-    Dependent jars path -s3://<<s3 bucket location>>/scripts/mleap_spark_assembly.jar
+    Python Lobrary path - s3://"s3 bucket name"/scripts/python.zip
+    Dependent jars path -s3://"s3 bucket name"/scripts/mleap_spark_assembly.jar
    
      ![Services in Console](./images/GlueJob2.png)
  7. Add the following Job parameters 
- 		--s3_input_data_location -  s3://<<s3 bucket location>>/data/car.data
+ 		--s3_input_data_location -  s3://"s3 bucket name"/data/car.data
  		--s3_model_bucket_prefix -   model
- 		--s3_model_bucket -   <<s3 bucket name>>
- 		--s3_output_bucket -  <<s3 bucket name >>
+ 		--s3_model_bucket -   "s3 bucket name"
+ 		--s3_output_bucket -  "s3 bucket name"
  		--s3_output_bucket_prefix  -  output
  		  ![Services in Console](./images/Glue Parameters.png)
    
