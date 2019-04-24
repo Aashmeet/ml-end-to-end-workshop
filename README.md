@@ -61,10 +61,12 @@ We'll start by creating a SageMaker notebook instance, which we will use for the
 ### 3. Download the notebooks
 
 The operating system of Jupyter Notebook server of SageMaker is a customized Linux server specially
-tuned for machine learning environment. You can directly access this Linux server using a web-based Terminal interface that Jupyter Notebook server provides. To run it, select Terminal as shown below:
+tuned for machine learning environment. You can directly access this Linux server using a web-based Terminal interface that Jupyter Notebook server provides. To run it, Go to Open Jupyter-> Click on “New” -> Terminal 
+![Notebook Settings](./images/TerminalAccess.png)
 
 
 In Terminal, run below Linux shell commands to download a sample Jupyter notebook 
+![Notebook Settings](./images/Terminal.png)
 
 cd SageMaker/
 git clone https://github.com/Aashmeet/ml-end-to-end-workshop
@@ -72,7 +74,7 @@ git clone https://github.com/Aashmeet/ml-end-to-end-workshop
 
 After cloning the git, click the top-left Jupyter icon to go back to the notebook. Clicking Refresh icon on
 the top-right corner to see a newly created folder (ai-ml-workshop). Click the folder and verify that the notebook exists.
-
+![Notebook Settings](./images/PostTerminal.png)
 Open the notebook in the folder "Car Evaluation" and start working through the parts described below 
 
 
