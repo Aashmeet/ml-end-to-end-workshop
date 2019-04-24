@@ -140,12 +140,18 @@ For the Glue Job to be created ,please follow the below steps :
    
      ![Services in Console](./images/GlueJob2.png)
  7. Add the following Job parameters 
+ 
  		--s3_input_data_location -  s3://"s3 bucket name"/data/car.data
+      
  		--s3_model_bucket_prefix -   model
+
  		--s3_model_bucket -   "s3 bucket name"
+      
  		--s3_output_bucket -  "s3 bucket name"
+      
  		--s3_output_bucket_prefix  -  output
- 		  ![Services in Console](./images/Glue Parameters.png)
+      
+ 	![Services in Console](./images/Glue Parameters.png)
    
  8.	Click on Save Job and Edit Script 
       ![Services in Console](./images/GlueJob3.png)
