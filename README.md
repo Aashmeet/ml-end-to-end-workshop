@@ -78,7 +78,7 @@ the top-right corner to see a newly created folder (ai-ml-workshop). Click the f
 ![Notebook Settings](./images/PostTerminal.png)
 Open the notebook in the folder "Car Evaluation" and now you are ready to start working on the three parts of the workshop.
 
-
+![Access Notebook](./images/final-notebook.png)
 
 ## Part 1 - Data Engineering 
 
@@ -98,8 +98,9 @@ This is so the pre-processing steps can be reused during inference for real-time
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and will execute these steps for each real-time inference request.
 
 Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
+These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
 
-Once complete , you will create a Glue job to execute the steps .
+Once complete , you will create a Glue job to execute the steps . These are steps/cell 1.4 and 1.5 in the 'Car Evaluation' Jupyter notebook .
 
 ## Part 2 - Machine Learning 
 
@@ -107,7 +108,7 @@ In this section ,we will define the machine learning process to create a model u
 
 Now that we have our data preprocessed in a format that XGBoost recognizes, we can run a simple training job to train a classifier model on our data. We can run this entire process in our Jupyter notebook.This will train the model on the preprocessed data we created earlier. After a few minutes, usually less than 5, the job should complete successfully, and output our model artifacts to the S3 location we specified. Once this is done, we can deploy an inference pipeline that consists of pre-processing, inference and post-processing steps.
 
-Follow the steps in the Jupyter notebook to execute the Machine learning part -this will include setting up a training job to build a model and then create an endpoint to host the model .
+Follow the steps/cells in the Jupyter notebook to execute the Machine learning part -this will include setting up a training job to build a model and then create an endpoint to host the model .
 
 ## Part 3- Inference via Single Page Application
 
