@@ -66,7 +66,7 @@ tuned for machine learning environment. You can directly access this Linux serve
 
 
 In Terminal, run below Linux shell commands to download a sample Jupyter notebook 
-![Notebook Settings](./images/Terminal.png)
+![Notebook Settings](./images/terminal.png)
 
 cd SageMaker/
 git clone https://github.com/Aashmeet/ml-end-to-end-workshop
