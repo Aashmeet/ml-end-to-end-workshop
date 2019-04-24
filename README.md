@@ -101,6 +101,8 @@ Finally, we will deploy the pre-processing, inference, and post-processing steps
 Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
 These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
 
+![Services in Console](./images/BeginDataEng.png)
+
 Once complete , you will create a Glue job to execute the steps . 
 
 ### Glue Job Process 
@@ -111,7 +113,12 @@ For the Glue Job to be created ,please follow the below steps :
 
 1.	Go to Services -> AWS Glue 
 
+
+![Services in Console](./images/SearchGlue.png)
+
 2.	At the left ,under the "ETL" tab , click Jobs 
+
+![Services in Console](./images/New Job.png)
 
 3.	Click on " Add Job"
 
@@ -124,20 +131,28 @@ For the Glue Job to be created ,please follow the below steps :
    Script File Name - s3://<<s3 bucket location>>/scripts/preprocessor.py
    S3 path where the script is stored
    
+   ![Services in Console](./images/GlueJob1.png)
    
  5.	Keep the Advanced Properties and Tags as default
  6. Click on "Security Configuration ,script libraries and job parameters
     Python Lobrary path - s3://<<s3 bucket location >>/scripts/python.zip
     Dependent jars path -s3://<<s3 bucket location>>/scripts/mleap_spark_assembly.jar
+   
+     ![Services in Console](./images/GlueJob2.png)
  7. Add the following Job parameters 
  		--s3_input_data_location -  s3://<<s3 bucket location>>/data/car.data
  		--s3_model_bucket_prefix -   model
  		--s3_model_bucket -   <<s3 bucket name>>
  		--s3_output_bucket -  <<s3 bucket name >>
  		--s3_output_bucket_prefix  -  output
- 		
+ 		  ![Services in Console](./images/Glue Parameters.png)
+   
  8.	Click on Save Job and Edit Script 
+      ![Services in Console](./images/GlueJob3.png)
+      
  9. Click on "Run Job" . The job will take about 3-4 minutes to finish. 
+ 
+    ![Services in Console](./images/JobSuccess.png)
 
  
  Here is the explanation of what the job is actually doing :
