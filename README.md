@@ -69,17 +69,18 @@ In Terminal, run below Linux shell commands to download a sample Jupyter noteboo
 ![Notebook Settings](./images/terminal.png)
 
 cd SageMaker/
+
 git clone https://github.com/Aashmeet/ml-end-to-end-workshop
 
 
 After cloning the git, click the top-left Jupyter icon to go back to the notebook. Clicking Refresh icon on
 the top-right corner to see a newly created folder (ai-ml-workshop). Click the folder and verify that the notebook exists.
 ![Notebook Settings](./images/PostTerminal.png)
-Open the notebook in the folder "Car Evaluation" and start working through the parts described below 
+Open the notebook in the folder "Car Evaluation" and now you are ready to start working on the three parts of the workshop.
 
 
 
-## Data Engineering 
+## Part 1 - Data Engineering 
 
 
 In this section, we’ll use Apache Spark MLLib for data processing using AWS Glue and reuse the data processing code during inference. We’ll use the Car Evaluation Data Set from  UCI’s Machine Learning Repository.
@@ -100,7 +101,7 @@ Execute the steps in the notebook to set up the S3 bucket and download the requi
 
 Once complete , you will create a Glue job to execute the steps .
 
-## Machine Learning 
+## Part 2 - Machine Learning 
 
 In this section ,we will define the machine learning process to create a model using XGBoost to do real time inference .
 
@@ -108,7 +109,7 @@ Now that we have our data preprocessed in a format that XGBoost recognizes, we c
 
 Follow the steps in the Jupyter notebook to execute the Machine learning part -this will include setting up a training job to build a model and then create an endpoint to host the model .
 
-## Inference via Single Page Application
+## Part 3- Inference via Single Page Application
 
 In the Jupyter notebook , you have tested the inference on the Machine learning model .
 Now we will build a SPA using AWS Amplify and React and will set up the process to test the inference via the web channel .
