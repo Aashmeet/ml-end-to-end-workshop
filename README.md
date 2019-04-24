@@ -75,10 +75,11 @@ git clone https://github.com/Aashmeet/ml-end-to-end-workshop
 
 After cloning the git, click the top-left Jupyter icon to go back to the notebook. Clicking Refresh icon on
 the top-right corner to see a newly created folder (ai-ml-workshop). Click the folder and verify that the notebook exists.
-![Notebook Settings](./images/PostTerminal.png)
-Open the notebook in the folder "Car Evaluation" and now you are ready to start working on the three parts of the workshop.
-
 ![Access Notebook](./images/final-notebook.png)
+
+Open the notebook in the folder "Car Evaluation" and now you are ready to start working on the three parts of the workshop.
+![Notebook Settings](./images/PostTerminal.png)
+
 
 ## Part 1 - Data Engineering 
 
