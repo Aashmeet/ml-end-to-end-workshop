@@ -159,6 +159,8 @@ For the Glue Job to be created ,please follow the below steps :
  9. Click on "Run Job" . The job will take about 3-4 minutes to finish. 
  
     ![Services in Console](./images/JobSuccess.png)
+    
+    ![Services in Console](./images/GlueJobOutput.png)
 
  
  Here is the explanation of what the job is actually doing :
@@ -256,7 +258,18 @@ In this section ,we will define the machine learning process to create a model u
 
 Now that we have our data preprocessed in a format that XGBoost recognizes, we can run a simple training job to train a classifier model on our data. We can run this entire process in our Jupyter notebook.This will train the model on the preprocessed data we created earlier. After a few minutes, usually less than 5, the job should complete successfully, and output our model artifacts to the S3 location we specified. Once this is done, we can deploy an inference pipeline that consists of pre-processing, inference and post-processing steps.
 
-Follow the steps/cells in the Jupyter notebook to execute the Machine learning part -this will include setting up a training job to build a model and then create an endpoint to host the model .
+Follow the steps/cells in the Jupyter notebook to execute the Machine learning part (labelled as 2) -this will include setting up a training job to build a model and then create an endpoint to host the model .
+
+When the training job completes ,the status will be updated to "Completed"
+   ![Services in Console](./images/MachineLearningTraining.png)
+
+When the endpoint is created ,the status will be updated to "InService"
+    ![Services in Console](./images/MachineLearningEndpoint .png)
+    
+On testing the inference locally ,the output is as below :
+    ![Services in Console](./images/MachineLearningInference.png)
+    
+    
 
 ## Part 3- Inference via Single Page Application
 
