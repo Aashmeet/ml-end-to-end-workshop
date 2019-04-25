@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/items",
+            "lambdaFunction": "sagemaker",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "sagemaker",
+    "apiName": "sagemaker",
+    "functionArns": [
+        {
+            "lambdaFunction": "sagemaker"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "syd-summit-2019-aiml-20190417070314-authRole",
+        "unAuthRoleName": "syd-summit-2019-aiml-20190417070314-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "sagemaker",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

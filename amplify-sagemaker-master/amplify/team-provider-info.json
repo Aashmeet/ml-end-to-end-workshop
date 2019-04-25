@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "syd-summit-2019-aiml-20190417070314-authRole",
+            "UnauthRoleArn": "arn:aws:iam::927378468065:role/syd-summit-2019-aiml-20190417070314-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::927378468065:role/syd-summit-2019-aiml-20190417070314-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "syd-summit-2019-aiml-20190417070314-deployment",
+            "UnauthRoleName": "syd-summit-2019-aiml-20190417070314-unauthRole",
+            "StackName": "syd-summit-2019-aiml-20190417070314",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:927378468065:stack/syd-summit-2019-aiml-20190417070314/de7c11f0-60de-11e9-b6e9-064b1a6199c8"
+        }
+    }
+}
