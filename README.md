@@ -248,6 +248,10 @@ In addition, it may be helpful to examine the code which allows us to serialize 
 
 You’ll notice we unzip this archive and re-archive it into a tar.gz file that SageMaker recognizes.
 
+With the completion of these steps , the S3 bucket you created will have the structure as per the diagram below . 
+
+  ![Services in Console](./images/S3GlueJob.png)
+
 
  
 
