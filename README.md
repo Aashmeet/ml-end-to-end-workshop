@@ -283,21 +283,31 @@ Now we will build a SPA using AWS Amplify and React and will set up the process 
 
 To set up the environment for the same , follow the below steps :
 
-###Set up a Cloud9 Workspace
+### Set up a Cloud9 Workspace
 AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It includes a code editor, debugger, and terminal. Cloud9 comes prepackaged with essential tools for popular programming languages, including JavaScript, Python, PHP, and more, so you don’t need to install files or configure your development machine to start new projects.
 
-Create a new environment
+#### Create a new environment
 
-    Go to the Cloud9 web console
-    Select Create environment
-    Name it workshop, and go to the Next step
-    Select Create a new instance for environment (EC2) and pick t2.medium
-    Leave all of the environment settings as they are, and go to the Next step
-    Click Create environment
+Go to the Cloud9 web console
+    
+![Notebook Instances](./images/GoToCloud9.png)
 
+ Select Create environment .Name it workshop, and go to the Next step
+ 
+ ![Notebook Instances](./images/CreateEnv.png)
+ 
+Select Create a new instance for environment (EC2) and pick t2.medium
 
+ ![Notebook Instances](./images/ConfigureEnv.png)
+
+Leave all of the environment settings as they are, and go to the Next step and Click Create environment
+
+Once the Cloud9 Environment is configured , you will need to doenload the project from the github and upload it to the Cloud9 Environment .
+
+ ![Notebook Instances](./images/UploadProject.png)
 
 Before we begin coding, there are a few things we need to install, update, and configure in the Cloud9 environment.
+ ![Notebook Instances](./images/Cloud9Setup.png)
 
 In the Cloud9 terminal, run the following commands to install and update some software we’ll be using for this workshop:
 
@@ -310,18 +320,16 @@ nvm alias default v8.11.0
 
 #### Install the AWS Amplify CLI
 npm install -g @aws-amplify/cli
-git clone https://github.com/aws-samples/aws-mobile-appsync-chat-starter-angular.git
-cd aws-mobile-appsync-chat-starter-angular
 
-
-### Download the project from github
-First, clone this repository and navigate to the created folder:
 
 
 ### Additional set up:
-Before we start building our UI, we’ll also include Semantic UI components for React to give us components that will help make our interface look a bit nicer.
+Before we start building our UI, we’ll also include Semantic UI components for React to give us components that will help make our interface look a bit nicer. 
+Go to thr actual project folder and run the below command .
 
 npm install --save semantic-ui-react
+
+Now the environment is ready with all the required installs 
 
 ### Set up UI Environment
 
@@ -329,14 +337,23 @@ The next steps will help you set up a project im an environment.The project cont
 
 #### Set up Amplify envioronment
 Set up your AWS resources the Amplify CLI:
-amplify init
+$ amplify init
+ ![Notebook Instances](./images/amplifyinit.png)
+ 
+  ![Notebook Instances](./images/amplifyinitcomplete.png)
 
 Create the cloud resources by pushing the changes:
 $ amplify push
 
 Execute amplify add hosting from the project's root folder and follow the prompts to create a S3 bucket (DEV) and/or a CloudFront distribution (PROD).
-
+  ![Notebook Instances](./images/amplifyhost.png)
+  
 Build and publish the application
+
     $ amplify publish
     
+  ![Notebook Instances](./images/amplifyendpoint.png)
+  ![Notebook Instances](./images/amplifypublish.png)
+    
 Now you should get a url for the application . Access the SPA and invoke the sagemaker endpoint with the values .
+  ![Notebook Instances](./images/FinalInference.png)
