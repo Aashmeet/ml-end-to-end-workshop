@@ -264,12 +264,13 @@ When the training job completes ,the status will be updated to "Completed"
    ![Services in Console](./images/MachineLearningTraining.png)
 
 When the endpoint is created ,the status will be updated to "InService"
-    ![Services in Console](./images/MachineLearningEndpoint .png)
+  ![Services in Console](./images/MachineLearningEndpoint.png)
     
 On testing the inference locally ,the output is as below :
     ![Services in Console](./images/MachineLearningInference.png)
     
     
+At this point , the machine learning process for the workload is complete and you are ready to build a Single Page application to derive inference from the trained model .
 
 ## Part 3- Inference via Single Page Application
 
