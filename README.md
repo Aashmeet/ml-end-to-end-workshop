@@ -312,14 +312,14 @@ Before we begin coding, there are a few things we need to install, update, and c
 In the Cloud9 terminal, run the following commands to install and update some software we’ll be using for this workshop:
 
 #### Update the AWS CLI
-pip install --user --upgrade awscli
+''' pip install --user --upgrade awscli
 
 #### Install and use Node.js v8.10 (to match AWS Lambda)
-nvm install v8.11.0
-nvm alias default v8.11.0
+''' nvm install v8.11.0
+''' nvm alias default v8.11.0
 
 #### Install the AWS Amplify CLI
-npm install -g @aws-amplify/cli
+''' npm install -g @aws-amplify/cli
 
 
 
@@ -327,7 +327,7 @@ npm install -g @aws-amplify/cli
 Before we start building our UI, we’ll also include Semantic UI components for React to give us components that will help make our interface look a bit nicer. 
 Go to thr actual project folder and run the below command .
 
-npm install --save semantic-ui-react
+''' npm install --save semantic-ui-react
 
 Now the environment is ready with all the required installs 
 
@@ -337,20 +337,20 @@ The next steps will help you set up a project im an environment.The project cont
 
 #### Set up Amplify envioronment
 Set up your AWS resources the Amplify CLI:
-$ amplify init
+''' $ amplify init
  ![Notebook Instances](./images/amplifyinit.png)
  
   ![Notebook Instances](./images/amplifyinitcomplete.png)
 
 Create the cloud resources by pushing the changes:
-$ amplify push
+''' $ amplify push
 
 Execute amplify add hosting from the project's root folder and follow the prompts to create a S3 bucket (DEV) and/or a CloudFront distribution (PROD).
   ![Notebook Instances](./images/amplifyhost.png)
   
 Build and publish the application
 
-    $ amplify publish
+''' $ amplify publish
     
   ![Notebook Instances](./images/amplifyendpoint.png)
   ![Notebook Instances](./images/amplifypublish.png)
