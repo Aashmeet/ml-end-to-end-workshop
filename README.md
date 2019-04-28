@@ -1,6 +1,12 @@
 # Sagemaker Workshop - From Inception to Inference
 
-Welcome to the workshop .This is a self-paced workshop which will guide you through the complete Machine learning process for a Car evaluation use case .
+Enterprises today are exploring ways to upgrade existing applications to harvest value from **machine learning**. Business have lots of structured and unstructured data already. Machine learning is not a one time activity where you train a model and  it can live forever. There are things such as concept drift that makes the model stale. The stale model has to be minimally periodically retrained with fresh batch of data. To continue to get value out of machine learning models we need an architecture and process in place to repeatedly and consistently train new models and retrain existing models with new data.
+
+In the workshop, we will discuss how you can build an end to end pipeline for machine learning. Machine learning is more than building a cool model. It involves tasks that includes data sourcing, data ingestion, data transformation, pre-processing data for use in training, training a model and hosting the model.
+
+AWS provides several services to address specific needs of different stages of machine learning pipeline. The workshop have multiple labs that focus on different stages of machine learning pipeline. We will be demonstrating the overall flow and design of machine learning pipeline
+
+This is a self-paced workshop which will guide you through the complete Machine learning process for a Car evaluation use case .
 
 In this workshop we’ll use the Car Evaluation Data Set from UCI’s Machine Learning Repository. Our goal is to predict the acceptability of a specific car, amongst the values of: unacc, acc, good, and vgood. At the core, it is a classification problem and we will train a machine learning model using Amazon SageMaker’s built-in XGBoost algorithm. However, the dataset only contains six categorical string features - buying, maint, doors, persons, lug_boot, and safety and XGBoost can only process data that is in numerical format. Therefore we will pre-process the input data using SparkML StringIndexer followed by OneHotEncoder to convert it to numerical format. We will also apply a post-processing step on the prediction result using SparkML IndexToString to convert our inference output back to their original labels that correspond to the predicted condition of the car.
 
@@ -10,16 +16,34 @@ The workshop is using services including Amazon S3, AWS Glue , Amazon Sagemaker 
 
 This workshop is split into three sections :
 
-Section 1 : Data Engineerimg 
+Section 1 : Data Engineering -
+In Lab 1, we will source the  dataset from external source on internet, bring it to S3 . In enterprises the equivalent data may be already  present in some RDS, NoSQL or Data-warehouse system. The data can be ingested as a one time full-load as a batch or as a real-time stream of data. Depending on the usecase, there may be a need to do both batch and stream or just a batch or a stream. In the current workshop, we will do a one full-load of data into S3.In this Lab, you will use Glue Data Catalog to define schema on the data stored in S3 . You will perform ETL on the data to prepare it for the machine learning process.
 
-Section 2 : Machine Learning
+Section 2 : Machine Learning - At this point you should have all you files in an AWS S3 bucket ready for Data Science work. We will use Amazon Sagemaker for model training and inference.
 
-Section 3 : Inference on a Single Page Application
+Section 3 : Inference on a Single Page Application- Once the machine learning process is complete ,you should be able to run the inference on a Single Page Application using AWS Amplify .
 
+The labs are **sequential** and participants will have to complete them in the sequence. Each lab has references to resources and instruction to help you complete the lab successfully.
+
+
+# Reference Architecture
+![Reference Architecture](./images/reference-architecture.png)
 There are some prerequisites to kick-off the workshop as mentioned below :
 
+
 # Pre-requisites
-## Creating a Notebook Instance
+
+## Step 1:
+Create an AWS Account 
+The code and instructions in this workshop assume only one participant is using a given AWS account at a time. If you attempt sharing an account with another participant, you will encounter naming conflicts for certain resources. You can work around this by either using a suffix in your resource names or using distinct Regions, but the instructions do not provide details on the changes required to make this work.
+Use a personal account or create a new AWS account for this workshop rather than using an organization’s account to ensure you have full access to the necessary services and to ensure you do not leave behind any resources from the workshop.
+Find here information on how to set up your AWS Account >>
+
+
+## Step 2: Region
+Use US East (N. Virginia), US West (Oregon), or EU (Ireland) for this workshop. Each supports the complete set of services covered in the material. Consult the Region Table to determine which services are available in a Region.
+
+## Step 3 :Creating a Notebook Instance
 
 We'll start by creating a SageMaker notebook instance, which we will use for the other workshop modules.
 
