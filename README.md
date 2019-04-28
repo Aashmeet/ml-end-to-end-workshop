@@ -52,7 +52,7 @@ Jupyter is an open-source web application that allows you to create and share do
 
 There are two main types of "cells" in a notebook:  code cells, and "markdown" cells with explanatory text. You will be running the code cells.  These are distinguished by having "In" next to them in the left margin next to the cell, and a greyish background.  Markdown cells lack "In" and have a white background. In the screenshot below, the upper cell is a markdown cell, while the lower cell is a code cell:
 
-![Cells](../images/cells.png)
+![Cells](./images/cells.png)
 
 To run a code cell, simply click in it, then either click the **Run Cell** button in the notebook's toolbar, or use Control+Enter from your computer's keyboard. It may take a few seconds to a few minutes for a code cell to run. You can determine whether a cell is running by examining the `In[]:` indicator in the left margin next to each cell:  a cell will show `In [*]:` when running, and `In [a number]:` when complete.
 
@@ -111,9 +111,10 @@ tuned for machine learning environment. You can directly access this Linux serve
 In Terminal, run below Linux shell commands to download a sample Jupyter notebook 
 ![Notebook Settings](./images/terminal.png)
 
-`cd SageMaker/
 
-git clone https://github.com/Aashmeet/ml-end-to-end-workshop`
+`cd SageMaker/`
+
+`git clone https://github.com/Aashmeet/ml-end-to-end-workshop`
 
 
 After cloning the git, click the top-left Jupyter icon to go back to the notebook. Clicking Refresh icon on
