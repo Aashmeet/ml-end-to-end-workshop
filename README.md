@@ -44,7 +44,6 @@ Find here information on how to set up your AWS Account >>
 Use US East (N. Virginia), US West (Oregon), or EU (Ireland) for this workshop. Each supports the complete set of services covered in the material. Consult the Region Table to determine which services are available in a Region.
 
 ## Step 3 :Creating a Notebook Instance
-
 We'll start by creating a SageMaker notebook instance, which we will use for the other workshop modules.
 
 
@@ -81,9 +80,11 @@ We'll start by creating a SageMaker notebook instance, which we will use for the
 
 1. Wait for the server status to change to **InService**. This will take several minutes, possibly up to ten but likely much less.
 
-![Access Notebook](./images/open-notebook.png)
+![Access Notebook](./images/NotebookAccess1.png)
 
-2. Click **Open Jupyter**. You will now see the Jupyter homepage for your notebook instance.
+2. Click **Open Jupyter**. You will now see the Jupyter homepage for your notebook instance. The notebook instance will be empty and will look like below 
+
+![Access Notebook](./images/NotebookOpen.png)
 
 ### 3. Download the notebooks
 
@@ -95,9 +96,9 @@ tuned for machine learning environment. You can directly access this Linux serve
 In Terminal, run below Linux shell commands to download a sample Jupyter notebook 
 ![Notebook Settings](./images/terminal.png)
 
-cd SageMaker/
+`cd SageMaker/
 
-git clone https://github.com/Aashmeet/ml-end-to-end-workshop
+git clone https://github.com/Aashmeet/ml-end-to-end-workshop`
 
 
 After cloning the git, click the top-left Jupyter icon to go back to the notebook. Clicking Refresh icon on
@@ -125,9 +126,21 @@ Then, we will serialize and capture these artifacts produced by AWS Glue to Amaz
 This is so the pre-processing steps can be reused during inference for real-time requests using the SparkML Serving container that Amazon SageMaker provides. 
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and will execute these steps for each real-time inference request.
 
-Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
-These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
+1. Open the Notebook and Select Kernel->Restart and clear all Outputs 
+![Services in Console](./images/ClearOutputs.png)
 
+2.Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
+
+## These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
+
+![Services in Console](./images/S31.png)
+
+![Services in Console](./images/S32.png)
+
+![Services in Console](./images/S33.png)
+
+
+Once complete , look at the created S3 bucket and the contents . These would map to the screenshots below :
 ![Services in Console](./images/BeginDataEng.png)
 
 Once complete , you will create a Glue job to execute the steps . 
