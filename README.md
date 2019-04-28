@@ -211,7 +211,7 @@ For the Glue Job to be created ,please follow the below steps :
  
  7. Click on "Security Configuration ,script libraries and job parameters
  
-    `Python Lobrary path - s3://'Provide the s3 bucket name'/scripts/python.zip`
+    `Python Library path - s3://'Provide the s3 bucket name'/scripts/python.zip`
     
     `Dependent jars path -s3://'Provide the s3 bucket name'/scripts/mleap_spark_assembly.jar`
    
@@ -219,13 +219,13 @@ For the Glue Job to be created ,please follow the below steps :
      
  8. Add the following Job parameters 
  
- 		--s3_input_data_location -  s3://"s3 bucket name"/data/car.data
+ 		--s3_input_data_location -  s3://'Provide the s3 bucket name'/data/car.data
       
  		--s3_model_bucket_prefix -   model
 
- 		--s3_model_bucket -   "s3 bucket name"
+ 		--s3_model_bucket -   'Provide the s3 bucket name'
       
- 		--s3_output_bucket -  "s3 bucket name"
+ 		--s3_output_bucket - 'Provide the s3 bucket name'
       
  		--s3_output_bucket_prefix  -  output
       
