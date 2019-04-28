@@ -370,33 +370,44 @@ To set up the environment for the same , follow the below steps :
 
 ### Set up a Cloud9 Workspace
 AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It includes a code editor, debugger, and terminal. Cloud9 comes prepackaged with essential tools for popular programming languages, including JavaScript, Python, PHP, and more, so you don’t need to install files or configure your development machine to start new projects.
+In the instructions that follow, we describe the steps required to set up your AWS Cloud9
+environment and get ready to implement the workshop.
+Note: You must have a default VPC in the region you will run the workshop in. If you do not
+have a default VPC, please create one by following the instructions at
+https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html#create-default-vpc
 
 #### Create a new environment
 
-Go to the Cloud9 web console
+1. Go to the Cloud9 web console
     
 ![Notebook Instances](./images/GoToCloud9.png)
 
- Select Create environment .Name it workshop, and go to the Next step
+2. Select Create environment .Name it SMworkshop, and go to the Next step
  
  ![Notebook Instances](./images/CreateEnv.png)
  
-Select Create a new instance for environment (EC2) and pick t2.medium
+3. Select Create a new instance for environment (EC2) and pick t2.medium
 
  ![Notebook Instances](./images/ConfigureEnv.png)
 
-Leave all of the environment settings as they are, and go to the Next step and Click Create environment
+4. Leave all of the environment settings as they are, and go to the Next step and Click Create environment.
 
-Once the Cloud9 Environment is configured , you will need to doenload the project from the github and upload it to the Cloud9 Environment .
+5. Your new AWS Cloud9 environment will be created automatically, and will take a moment to complete. When it is finished, you will see the IDE in your browser
+
+6. Once the Cloud9 Environment is configured , you will need to doenload the project from the github and upload it to the Cloud9 Environment . For that extract the folder '' from the Github repository and click upload on the File Menu
 
  ![Notebook Instances](./images/UploadProject.png)
+ 
+7. Make sure all the files are uploaded and then kick off the process to set up AWS Amplify environment .
 
-Before we begin coding, there are a few things we need to install, update, and configure in the Cloud9 environment.
+
+ Before we begin coding, there are a few things we need to install, update, and configure in the Cloud9 environment.
  ![Notebook Instances](./images/Cloud9Setup.png)
 
 In the Cloud9 terminal, run the following commands to install and update some software we’ll be using for this workshop:
 
 #### Update the AWS CLI
+
 ` pip install --user --upgrade awscli`
 
 #### Install and use Node.js v8.10 (to match AWS Lambda)
@@ -405,7 +416,6 @@ In the Cloud9 terminal, run the following commands to install and update some so
 
 #### Install the AWS Amplify CLI
 `npm install -g @aws-amplify/cli`
-
 
 
 ### Additional set up:
@@ -422,12 +432,18 @@ The next steps will help you set up a project im an environment.The project cont
 
 #### Set up Amplify envioronment
 Set up your AWS resources the Amplify CLI:
+
 ` $ amplify init `
+
+This command creates new AWS backend resources (in this case a single S3 bucket to host your cloudformation templates) and pull the AWS service configurations into the app!
+Follow the prompts as shown in the below Image. Remember, even if you are implementing the ios or android version of the application, you MUST choose javascript here since the admin panel is a web app that makes calls to the backend and is seperate from the client.
+
  ![Notebook Instances](./images/amplifyinit.png)
  
-  ![Notebook Instances](./images/amplifyinitcomplete.png)
+ ![Notebook Instances](./images/amplifyinitcomplete.png)
 
-Create the cloud resources by pushing the changes:
+Now the required cloudformation templates are set up and it is time to create the cloud resources by pushing the changes:
+
 `$ amplify push`
 
 Execute amplify add hosting from the project's root folder and follow the prompts to create a S3 bucket (DEV) and/or a CloudFront distribution (PROD).
