@@ -396,12 +396,21 @@ https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html#create-default
 
 6. Once the Cloud9 Environment is configured , you will need to doenload the project from the github and upload it to the Cloud9 Environment . For that extract the folder '' from the Github repository and click upload on the File Menu
 
- ![Notebook Instances](./images/UploadProject.png)
+  6.1 Go to the GitHub project and download the zip by clicking “clone or Download “ the project .
+  
+   ![Notebook Instances](./images/githubProject.png)
+  
+  6.2 Unzip the project in your local directory. 
+  
+  6.3 For this part ,the folder you would be accessing is amplify-sagemaker-master 
+
+   ![Notebook Instances](./images/UploadProject.png)
  
 7. Make sure all the files are uploaded and then kick off the process to set up AWS Amplify environment .
 
 
  Before we begin coding, there are a few things we need to install, update, and configure in the Cloud9 environment.
+ 
  ![Notebook Instances](./images/Cloud9Setup.png)
 
 In the Cloud9 terminal, run the following commands to install and update some software we’ll be using for this workshop:
