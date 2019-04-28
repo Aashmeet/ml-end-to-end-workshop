@@ -229,15 +229,23 @@ For the Glue Job to be created ,please follow the below steps :
       
  		--s3_output_bucket_prefix  -  output
       
- 	  ![Services in Console](./images/GlueParameters.png)
+ 	  ![Services in Console](./images/Attributes.png)
    
  9.	Click on Save Job and Edit Script 
  
      ![Services in Console](./images/GlueJob3.png)
-      
- 10. Click on "Run Job" . The job will take about 3-4 minutes to finish. 
+     
+ 10. Click on "Run Job" . The job will take about 7-8 minutes to finish. 
  
-       ![Services in Console](./images/JobSuccess.png)
+ 
+ 11.  Check the logs for the Glue execution and make sure there are no errors.
+      ![Services in Console](./images/GlueJobExecution.png)
+     
+      ![Services in Console](./images/JobExecution.png)
+      
+ 12.  When the job is complete ,you should be able to see the "Success" status of the Glue Job.
+ 
+       ![Services in Console](./images/jobsucceed.png)
     
        ![Services in Console](./images/GlueJobOutput.png)
 
@@ -331,8 +339,6 @@ With the completion of these steps , the S3 bucket you created will have the str
 
   ![Services in Console](./images/S3GlueJob.png)
 
-
- 
 
 
 ## Part 2 - Machine Learning 
