@@ -142,22 +142,30 @@ Then, we will serialize and capture these artifacts produced by AWS Glue to Amaz
 This is so the pre-processing steps can be reused during inference for real-time requests using the SparkML Serving container that Amazon SageMaker provides. 
 Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and will execute these steps for each real-time inference request.
 
+
+### Set up Data 
 1. Open the Notebook and Select Kernel->Restart and clear all Outputs 
 ![Services in Console](./images/ClearOutputs.png)
 
-2.Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
+2. Go to the part 1 of the Lab and execute the initial steps 
 
-## These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
+![Services in Console](./images/BeginDataEng.png)
 
+Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
+
+3. These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
+
+4.Once complete , look at the created S3 bucket and the contents . These would map to the screenshots below :
+
+Folder 'data' and 'scripts' will be created . 
 ![Services in Console](./images/S31.png)
 
+Folder 'data' will have the sample car evaluation data .
 ![Services in Console](./images/S32.png)
 
+Folder 'scripts' will have the scripts required to execute the ETL Transformation 
 ![Services in Console](./images/S33.png)
 
-
-Once complete , look at the created S3 bucket and the contents . These would map to the screenshots below :
-![Services in Console](./images/BeginDataEng.png)
 
 Once complete , you will create a Glue job to execute the steps . 
 
