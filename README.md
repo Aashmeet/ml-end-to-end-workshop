@@ -155,7 +155,7 @@ Execute the steps in the notebook to set up the S3 bucket and download the requi
 
 3. These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
 
-4.Once complete , look at the created S3 bucket and the contents . These would map to the screenshots below :
+4. Once complete , look at the created S3 bucket and the contents . These would map to the screenshots below :
 
 Folder 'data' and 'scripts' will be created . 
 ![Services in Console](./images/S31.png)
@@ -175,35 +175,42 @@ If you take a look at the data we downloaded, you’ll notice all of the fields 
 Furthermore, to make our endpoint particularly useful, we also generate a post-processor in this script, which can convert our label indexes back to their original labels. All of these processor artifacts will be saved to S3 for SageMaker’s use later.
 For the Glue Job to be created ,please follow the below steps :
 
-1.	Go to Services -> AWS Glue 
+1.	Check the permission of the Role created above in Sagemaker . Go to IAM->Role ->Enter the role and check the trusted entities as per below .
+
+![Services in Console](./images/IAMTrustPolicy.png)
+
+2. Go to Services -> AWS Glue 
 
 
 ![Services in Console](./images/SearchGlue.png)
 
-2.	At the left ,under the "ETL" tab , click Jobs 
+3.	At the left ,under the "ETL" tab , click Jobs 
 
 ![Services in Console](./images/NewJob.png)
 
-3.	Click on " Add Job"
+4.	Click on " Add Job"
 
-4.	Provide the Job details as per below 
-   Name - preprocessing-cars-alias
-   IAM role -Use the IAM role created with Sagemaker 
-   Type - Spark
-   This job runs :  "An existing script that you can provide "
-   ETL Language - Python
-   Script File Name - s3:// "s3 bucket name"/scripts/preprocessor.py
-   S3 path where the script is stored
+5.	Provide the Job details as per below 
+   `Name - preprocessing-cars-alias`
+   `IAM role -Use the IAM role created with Sagemaker `
+   `Type - Spark`
+   `This job runs :  "An existing script that you can provide "`
+   `ETL Language - Python`
+   `Script File Name - s3:// 'Provide the s3 bucket name'/scripts/preprocessor.py`
+   `S3 path where the script is stored`
    
-   ![Services in Console](./images/GlueJob1.png)
+   ![Services in Console](./images/GlueJobCreate.png)
    
- 5.	Keep the Advanced Properties and Tags as default
- 6. Click on "Security Configuration ,script libraries and job parameters
-    Python Lobrary path - s3://"s3 bucket name"/scripts/python.zip
-    Dependent jars path -s3://"s3 bucket name"/scripts/mleap_spark_assembly.jar
+ 6.	Keep the Advanced Properties and Tags as default
+ 
+ 7. Click on "Security Configuration ,script libraries and job parameters
+ 
+    `Python Lobrary path - s3://'Provide the s3 bucket name'/scripts/python.zip`
+    `Dependent jars path -s3://'Provide the s3 bucket name'/scripts/mleap_spark_assembly.jar`
    
-     ![Services in Console](./images/GlueJob2.png)
- 7. Add the following Job parameters 
+     ![Services in Console](./images/GlueInput.png)
+     
+ 8. Add the following Job parameters 
  
  		--s3_input_data_location -  s3://"s3 bucket name"/data/car.data
       
@@ -217,10 +224,10 @@ For the Glue Job to be created ,please follow the below steps :
       
  	![Services in Console](./images/GlueParameters.png)
    
- 8.	Click on Save Job and Edit Script 
+ 9.	Click on Save Job and Edit Script 
       ![Services in Console](./images/GlueJob3.png)
       
- 9. Click on "Run Job" . The job will take about 3-4 minutes to finish. 
+ 10. Click on "Run Job" . The job will take about 3-4 minutes to finish. 
  
     ![Services in Console](./images/JobSuccess.png)
     
