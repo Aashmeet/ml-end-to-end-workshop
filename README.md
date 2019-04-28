@@ -82,6 +82,7 @@ We'll start by creating a SageMaker notebook instance, which we will use for the
 
 ![Access Notebook](./images/NotebookAccess1.png)
 
+
 2. Click **Open Jupyter**. You will now see the Jupyter homepage for your notebook instance. The notebook instance will be empty and will look like below 
 
 ![Access Notebook](./images/NotebookOpen.png)
