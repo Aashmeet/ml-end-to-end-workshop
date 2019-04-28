@@ -405,6 +405,8 @@ https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html#create-default
   6.3 For this part ,the folder you would be accessing is amplify-sagemaker-master 
 
    ![Notebook Instances](./images/UploadProject.png)
+   
+
  
 7. Make sure all the files are uploaded and then kick off the process to set up AWS Amplify environment .
 
@@ -449,11 +451,9 @@ Follow the prompts as shown in the below Image. Remember, even if you are implem
 
 ![Access Notebook](./images/amplifyinit1.png)
 
- ![Notebook Instances](./images/amplifyinit.png)
+![Notebook Instances](./images/amplifyinit.png)
  
- 
- 
- ![Notebook Instances](./images/amplifyinitcomplete.png)
+![Notebook Instances](./images/amplifyinitcomplete.png)
 
 Now the required cloudformation templates are set up and it is time to create the cloud resources by pushing the changes:
 
