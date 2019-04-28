@@ -447,7 +447,11 @@ Set up your AWS resources the Amplify CLI:
 This command creates new AWS backend resources (in this case a single S3 bucket to host your cloudformation templates) and pull the AWS service configurations into the app!
 Follow the prompts as shown in the below Image. Remember, even if you are implementing the ios or android version of the application, you MUST choose javascript here since the admin panel is a web app that makes calls to the backend and is seperate from the client.
 
+![Access Notebook](./images/amplifyinit1.png)
+
  ![Notebook Instances](./images/amplifyinit.png)
+ 
+ 
  
  ![Notebook Instances](./images/amplifyinitcomplete.png)
 
@@ -456,7 +460,12 @@ Now the required cloudformation templates are set up and it is time to create th
 `$ amplify push`
 
 Execute amplify add hosting from the project's root folder and follow the prompts to create a S3 bucket (DEV) and/or a CloudFront distribution (PROD).
-  ![Notebook Instances](./images/amplifyhost.png)
+
+`$ amplify hosting Add`
+
+While hosting ,choose the non-Prod option as per the below image 
+
+![Notebook Instances](./images/amplifyhosting.png)
   
 Build and publish the application
 
