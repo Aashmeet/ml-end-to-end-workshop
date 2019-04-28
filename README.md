@@ -68,6 +68,10 @@ We'll start by creating a SageMaker notebook instance, which we will use for the
 
 ![Create IAM role](./images/role-popup.png)
 
+![Create IAM role](./images/SagemakerRole1.png)
+
+![Create IAM role](./images/SagemakerRole2.png)
+
 6. You will be taken back to the Create Notebook instance page.  Now you should see a message saying "Success! You created an IAM role."
 
 ![Create Notebook Instance](./images/permissions-settings.png)
