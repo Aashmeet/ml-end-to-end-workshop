@@ -1,0 +1,80 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "syd-summit-2019-aiml-20190425173342-authRole",
+			"UnauthRoleArn": "arn:aws:iam::277454758150:role/syd-summit-2019-aiml-20190425173342-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::277454758150:role/syd-summit-2019-aiml-20190425173342-authRole",
+			"Region": "us-west-2",
+			"DeploymentBucketName": "syd-summit-2019-aiml-20190425173342-deployment",
+			"UnauthRoleName": "syd-summit-2019-aiml-20190425173342-unauthRole",
+			"StackName": "syd-summit-2019-aiml-20190425173342",
+			"StackId": "arn:aws:cloudformation:us-west-2:277454758150:stack/syd-summit-2019-aiml-20190425173342/45311470-6780-11e9-bc21-0a33685a019e"
+		}
+	},
+	"function": {
+		"sagemaker": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [],
+			"lastBuildTimeStamp": "2019-04-25T17:37:47.282Z",
+			"lastPackageTimeStamp": "2019-04-25T17:37:48.192Z",
+			"distZipFilename": "sagemaker-1556213867-latest-build.zip",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/syd-summit-2019-aiml-20190425173342-deployment/amplify-cfn-templates/function/sagemaker-cloudformation-template.json",
+				"logicalId": "functionsagemaker"
+			},
+			"lastPushTimeStamp": "2019-04-25T17:53:33.178Z",
+			"output": {
+				"Region": "us-west-2",
+				"Arn": "arn:aws:lambda:us-west-2:277454758150:function:sagemaker-prod",
+				"Name": "sagemaker-prod"
+			},
+			"lastPushDirHash": "TzcHYJAT+1fh7+8JauvgaKmuELM="
+		}
+	},
+	"api": {
+		"sagemaker": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "sagemaker",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			],
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/syd-summit-2019-aiml-20190425173342-deployment/amplify-cfn-templates/api/sagemaker-cloudformation-template.json",
+				"logicalId": "apisagemaker"
+			},
+			"lastPushTimeStamp": "2019-04-25T17:53:33.179Z",
+			"output": {
+				"ApiName": "sagemaker",
+				"RootUrl": "https://5817p6g172.execute-api.us-west-2.amazonaws.com/prod"
+			},
+			"lastPushDirHash": "LbGuoN8Yo1vSMe9lUGWV9MJap1w="
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/syd-summit-2019-aiml-20190425173342-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2019-04-25T17:53:33.180Z",
+			"output": {
+				"S3BucketSecureURL": "https://syd-summit-2019-aiml-20190425175147-hostingbucket-prod.s3.amazonaws.com",
+				"WebsiteURL": "http://syd-summit-2019-aiml-20190425175147-hostingbucket-prod.s3-website-us-west-2.amazonaws.com",
+				"Region": "us-west-2",
+				"HostingBucketName": "syd-summit-2019-aiml-20190425175147-hostingbucket-prod"
+			},
+			"lastPushDirHash": "iaJTQ3voTsrXiETbmuQWaih1BfI="
+		}
+	}
+}
