@@ -490,3 +490,41 @@ Build and publish the application
     
 Now you should get a url for the application . Access the SPA and invoke the sagemaker endpoint with the values .
   ![Notebook Instances](./images/FinalInference.png)
+  
+  Once you get the inference from the Sagemaker endpoint ,you have successfully built an end-to-end use case to build a machine learning solution for a business problem .
+  
+  
+  
+## Optional Part - Integration with Code Pipeline 
+This is an optional part for you to take back as an outcome from the lab and build from here . The instructions below provide you integration with Code Pipeline to introduce Continuous delivery in your business problem . This is important since we need to adhere to the best practices of implementing a solution with Software engineering principles .
+
+**Prerequisites:**
+GitHub OAuth Token – Follow these instructions to create an OAuth Token: Create a GitHub OAuth Token
+
+To integrate with GitHub, AWS CodePipeline uses OAuth tokens. Go to GitHub's Token Settings to generate your token and ensure you enable the following two scopes:
+
+ admin:repo_hook, which is used to detect when you have committed and pushed changes to the repository
+ repo, which is used to read and pull artifacts from public and private repositories into a pipeline
+ 
+1 Extract the details from the model and update the cloudformation stack .
+
+2 Go to CloudFormation and Launch the stack 
+
+
+3 The stack should comprise of the following sample options :
+
+###  Components Details
+  - [**AWS CloudFormation**](https://aws.amazon.com/cloudformation/) – This solution uses the CloudFormation Template language, in either YAML or JSON, to create each resource.
+  - [**AWS CodeBuild**](https://aws.amazon.com/codebuild/) – This solution uses CodeBuild to build the source code from GitHub
+  - [**AWS CodePipeline**](https://aws.amazon.com/codepipeline/) – CodePipeline has various stages defined in CloudFormation which step through which actions must be taken in which order to go from source code to creation of the production endpoint.
+  - [**AWS EC2**](https://aws.amazon.com/ec2/) – EC2 Instances are created in order to train the model as well as host the model to be accessed via and endpoint.  
+  - [**AWS SageMaker**](https://aws.amazon.com/sagemaker/) – This solution uses SageMaker to train the model to be used and host the model at an endpoint, where it can be accessed via HTTP/HTTPS requests
+  - [**AWS IAM**](https://aws.amazon.com/iam/) – Separate Identity and Access Management (IAM) Roles are created for the pipeline, CodeBuild, and CloudFormation.
+  - [**AWS SNS**](https://aws.amazon.com/sns/) – This solution uses a Simple Notification Service (SNS) Topic in order to approve movement into production after testing.
+  - [**AWS S3**](https://aws.amazon.com/s3/) – Artifacts created throughout the pipeline as well as the data for the model is stored in an Simple Storage Service (S3) Bucket.
+ 
+ This will create a framework for you to run and deploy the stack and you can use this framework to build continuous integration .
+
+
+
+
