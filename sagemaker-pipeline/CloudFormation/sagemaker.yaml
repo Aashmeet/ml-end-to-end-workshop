@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS SageMaker Endpoint'
+Parameters:
+  BucketName:
+    Description: Name of data bucket
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  CommitID:
+    Description: ID of the current commit
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  Environment:
+    Description: Current environment we are working in
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  ParentStackName:
+    Description: Name of pipeline stack
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  SageMakerRole:
+    Description: Name of SageMaker role
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  Timestamp:
+    Description: Resource timestamp to prevent naming conflicts
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+Resources:
+  Model:
+    Type: "AWS::SageMaker::Model"
+    Properties:
+      ModelName: !Sub ${Environment}-${ParentStackName}-${CommitID}-${Timestamp}
+      ExecutionRoleArn: !Sub ${SageMakerRole}
+      PrimaryContainer:
+        ModelDataUrl: !Sub s3://${BucketName}/${ParentStackName}-${CommitID}-${Timestamp}/output/model.tar.gz
+        Image: <<Image detail>>
+  Endpoint:
+    Type: "AWS::SageMaker::Endpoint"
+    DependsOn: EndpointConfig
+    Properties:
+      EndpointName: !Sub ${Environment}-${ParentStackName}-${CommitID}-${Timestamp}
+      EndpointConfigName: !GetAtt EndpointConfig.EndpointConfigName
+  EndpointConfig:
+    Type: "AWS::SageMaker::EndpointConfig"
+    DependsOn: Model
+    Properties:
+        EndpointConfigName: !Sub ${Environment}-${ParentStackName}-${CommitID}-${Timestamp}
+        ProductionVariants:  
+        - ModelName: !GetAtt Model.ModelName
+          VariantName: AllTraffic
+          InitialInstanceCount: 1
+          InstanceType: ml.t2.medium
+          InitialVariantWeight: 1

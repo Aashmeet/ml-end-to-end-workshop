@@ -1,0 +1,416 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  CloudFormation SageMaker pipeline.
+Parameters:
+  Email:
+    Description: The email address where CodePipeline sends pipeline notifications
+    Type: String
+  GitHubToken:
+    NoEcho: true
+    Description: Secret. It might look something like 9b189a1654643522561f7b3ebd44a1531a4287af OAuthToken with access to Repo. Go to https://github.com/settings/tokens
+    Type: String
+  GitHubUser:
+    Default: aashmeet
+    Description: GitHub UserName
+    Type: String
+  Repo:
+    Default: sagemaker-pipeline
+    Description: GitHub Repo to pull from. Only the Name. not the URL
+    Type: String
+  Branch:
+    Default: master
+    Description: Branch to use from Repo. Only the Name. not the URL
+    Type: String
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Stack Settings"
+        Parameters:
+          - Email
+          - GitHubToken
+          - GitHubUser
+          - Repo
+          - Branch
+
+Resources:
+  ArtifactStoreBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-pipeline-artifact-store
+      VersioningConfiguration:
+        Status: Enabled
+  
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-pipeline-data
+      VersioningConfiguration:
+        Status: Enabled
+        
+  CodePipelineSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub ${AWS::StackName}-pipeline-topic
+      Subscription:
+        - Endpoint: !Ref Email
+          Protocol: email
+          
+  
+  CFNNagProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${AWS::StackName}-pipeline-cfnnag
+      Description: Lints CloudFormation
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-ruby-2.3-amazonlinux-64:2.1.6
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub |
+          version: 0.2
+          phases:
+            install:
+              commands:
+                - gem install cfn-nag
+            build:
+              commands:
+                - cfn_nag_scan --input-path CloudFormation/*.yaml
+      TimeoutInMinutes: 30
+
+  ModelTrainingProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${AWS::StackName}-pipeline-modeltraining
+      Description: Trains machine learning model using SageMaker
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.1.6
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub |
+          version: 0.2
+          phases:
+            install:
+              commands:
+                - echo "Installing wget and boto3"
+                - pip3 install wget
+                - pip3 install boto3
+            build:
+              commands:
+                - echo "Running training.py"
+                - python3 Source/training.py "${SagemakerRole.Arn}" "${DataBucket}" "${AWS::StackName}" $CODEBUILD_RESOLVED_SOURCE_VERSION
+            post_build:
+              commands:
+                - echo "Cleaning"
+                - rm caltech*
+          artifacts:
+            files:
+              - '**/*'
+      TimeoutInMinutes: 30
+
+  TestEndpointProjectQA:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${AWS::StackName}-pipeline-test-qa
+      Description: Checks if endpoint is working
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.1.6
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub |
+          version: 0.2
+          phases:
+            install:
+              commands:
+                - echo "Installing wget and boto3"
+                - pip3 install wget
+                - pip3 install boto3
+                - pip3 install numpy
+            build:
+              commands:
+              - echo "Running test.py"
+              - python3 Source/test.py "qa-${AWS::StackName}" "CloudFormation/configuration_qa.json"
+      TimeoutInMinutes: 30
+
+  TestEndpointProjectProd:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${AWS::StackName}-pipeline-test-prod
+      Description: Checks if endpoint is working
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.1.6
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub |
+          version: 0.2
+          phases:
+            install:
+              commands:
+                - echo "Installing wget and boto3"
+                - pip3 install wget
+                - pip3 install boto3
+                - pip3 install numpy
+            build:
+              commands:
+              - echo "Running test.py"
+              - python3 Source/test.py "prod-${AWS::StackName}" "CloudFormation/configuration_prod.json"
+      TimeoutInMinutes: 30
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Location: !Ref 'ArtifactStoreBucket'
+        Type: S3
+      DisableInboundStageTransitions: []
+      Name: !Ref 'AWS::StackName'
+      RoleArn: !GetAtt [PipelineRole, Arn]
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: '1'
+              Configuration:
+                Owner: !Ref 'GitHubUser'
+                Repo: !Ref 'Repo'
+                Branch: !Ref 'Branch'
+                OAuthToken: !Ref 'GitHubToken'
+              OutputArtifacts:
+                - Name: src
+              RunOrder: '1'
+        - Name: Build_and_Train
+          Actions:
+            - Name: cfn-nag
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref 'CFNNagProject'
+              InputArtifacts:
+                - Name: src
+              RunOrder: '1'
+            - Name: ModelTraining
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref 'ModelTrainingProject'
+              InputArtifacts:
+                - Name: src
+              OutputArtifacts:
+                - Name: bld
+              RunOrder: '2'
+        - Name: QA
+          Actions:
+            - Name: LaunchEndpoint
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              InputArtifacts:
+                - Name: bld
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                RoleArn: !GetAtt [CFNRole, Arn]
+                StackName: !Sub qa-${AWS::StackName}
+                TemplatePath: !Sub "bld::CloudFormation/sagemaker.yaml"
+                TemplateConfiguration: "bld::CloudFormation/configuration_qa.json"
+              RunOrder: '1'
+            - Name: TestEndpoint
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref 'TestEndpointProjectQA'
+              InputArtifacts:
+                - Name: bld
+              RunOrder: '2'
+        - Name: Production
+          Actions:
+            - Name: ApprovalGate
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: '1'
+              Configuration:
+                NotificationArn: !Ref CodePipelineSNSTopic
+                CustomData: !Sub 'Do you want to push your changes to production?'
+              RunOrder: '1'
+            - Name: LaunchEndpoint
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              InputArtifacts:
+                - Name: bld
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                RoleArn: !GetAtt [CFNRole, Arn]
+                StackName: !Sub prod-${AWS::StackName}
+                TemplatePath: !Sub "bld::CloudFormation/sagemaker.yaml"
+                TemplateConfiguration: "bld::CloudFormation/configuration_prod.json"
+              RunOrder: '2'
+            - Name: TestEndpoint
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref 'TestEndpointProjectProd'
+              InputArtifacts:
+                - Name: bld
+              RunOrder: '3'
+
+  CFNRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-cfn-role
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [cloudformation.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyName: CloudFormationRole
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  - sagemaker:*
+                  - iam:PassRole
+                  - s3:*
+                Effect: Allow
+                Resource: '*'
+
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-codebuild-role
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [codebuild.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyName: UploadAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - codepipeline:*
+                - sagemaker:*
+                - s3:*
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                - iam:PassRole
+                Effect: Allow
+                Resource: !Sub arn:aws:iam::${AWS::AccountId}:role/${AWS::StackName}-sagemaker-role
+             
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-pipeline-role
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [codepipeline.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyName: CodePipelineAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - s3:*
+                - codebuild:*
+                - cloudformation:CreateStack
+                - cloudformation:DescribeStacks
+                - cloudformation:DeleteStack
+                - cloudformation:UpdateStack
+                - cloudformation:CreateChangeSet
+                - cloudformation:ExecuteChangeSet
+                - cloudformation:DeleteChangeSet
+                - cloudformation:DescribeChangeSet
+                - cloudformation:SetStackPolicy
+                - iam:PassRole
+                - sns:Publish
+                Effect: Allow
+                Resource: '*'
+
+  SagemakerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-sagemaker-role
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [sagemaker.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonSageMakerFullAccess 
+      Policies:
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:DeleteObject
+                - s3:ListBucket
+                Effect: Allow
+                Resource: arn:aws:s3:::*
+
+Outputs:      
+  PipelineUrl:
+    Value: !Sub https://console.aws.amazon.com/codepipeline/home?region=${AWS::Region}#/view/${Pipeline}
+    Description: CodePipeline URL
