@@ -127,6 +127,7 @@ Open the notebook in the folder "Car Evaluation" and now you are ready to start 
 
 ## Part 1 - Data Engineering 
 
+Data scientists and developers spend a large portion of their time cleaning and preparing data before training machine learning (ML) models. This is because the real-world data cannot be used directly. There may be missing values, duplicate information, or multiple variations of the same information that need to be standardized. Additionally, data often needs to be transformed from one format to another so it can be used by machine learning algorithms. For example, the XGBoost algorithm can only accept numerical data, so if input data in strings or categorical format, it needs to be converted to numerical format before it can be used. In other cases, combining multiple input features into a single feature can result in more accurate machine learning models. For example, using a combination of temperature and humidity to predict flight delays produces more accurate models.
 
 In this section, we’ll use Apache Spark MLLib for data processing using AWS Glue and reuse the data processing code during inference. We’ll use the Car Evaluation Data Set from  UCI’s Machine Learning Repository.
 
@@ -351,6 +352,10 @@ In this section ,we will define the machine learning process to create a model u
 
 Now that we have our data preprocessed in a format that XGBoost recognizes, we can run a simple training job to train a classifier model on our data. We can run this entire process in our Jupyter notebook.This will train the model on the preprocessed data we created earlier. After a few minutes, usually less than 5, the job should complete successfully, and output our model artifacts to the S3 location we specified. Once this is done, we can deploy an inference pipeline that consists of pre-processing, inference and post-processing steps.
 
+When you deploy machine learning models into production to make predictions on new data (a process called inference), you need to ensure that the same data processing steps that were used in training are also applied to each inference request. Otherwise, you can get incorrect prediction results. Until now, you had to maintain two copies of the same data processing steps for use in training and inference and ensure that they were always in sync. Also, the data processing steps had to be coupled either with the application code making requests to the machine learning models or baked into the inference logic. As a result, development overhead and complexity was higher than it needed to be, and your ability to iterate quickly was limited.
+
+### Machine Learning Process
+Now, you can reuse the same data processing steps from training during inference by creating an inference pipeline in Amazon SageMaker. You can use an inference pipeline to specify up to five data processing and inference steps. These steps are executed for every prediction request. You can reuse the data processing steps from training, so you only manage one copy of the data processing code, and you can independently update the data processing steps without the need to update your client application or inference logic.
 Follow the steps/cells in the Jupyter notebook to execute the Machine learning part (labelled as 2) -this will include setting up a training job to build a model and then create an endpoint to host the model .
 
 When the training job completes ,the status will be updated to "Completed"
@@ -364,6 +369,16 @@ On testing the inference locally ,the output is as below :
     
     
 At this point , the machine learning process for the workload is complete and you are ready to build a Single Page application to derive inference from the trained model .
+
+
+### Metrics for your inference pipelines
+
+When building your deployments, you may find you need to monitor or debug your endpoint, and the new inference pipelines change how the logs appear in Amazon CloudWatch. You can now see logs and metrics for each of your containers within a single endpoint. To see these logs, return to the AWS Management Console, and go to Services, Amazon SageMaker, Inference, and then Endpoints. Locate your pipeline-xgboost endpoint in the list, and select it by the name to see the endpoint details.
+
+Locate the Monitor section, and you will find a View logs link. Select it, and you will be taken to a CloudWatch Logs interface. For our example endpoint, there are three sets of log streams, one for each container. It should look like this:
+
+
+If an invocation gives an error, the relevant output will appear in the relevant log stream. Whatever is output to stdout for each container will end up at this location.
 
 ## Part 3- Inference via Single Page Application
 
