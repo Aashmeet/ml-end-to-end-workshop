@@ -121,7 +121,7 @@ the top-right corner to see a newly created folder (ai-ml-workshop). Click the f
 ![Access Notebook](./images/final-notebook.png)
 
 Open the notebook in the folder "Car Evaluation" and now you are ready to start working on the three parts of the workshop.
-![Notebook Settings](./images/PostTerminal.png)
+
 
 
 ## Part 1 - Data Engineering 
