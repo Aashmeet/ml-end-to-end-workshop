@@ -508,6 +508,13 @@ Now you should get a url for the application . Access the SPA and invoke the sag
   
   Once you get the inference from the Sagemaker endpoint ,you have successfully built an end-to-end use case to build a machine learning solution for a business problem .
   
+
+## Cleaning up your AWS environment
+
+When you are done with this lab, make sure to delete your Amazon SageMaker endpoint to avoid incurring unexpected costs. You can do this from the console by going to Services, Amazon SageMaker, Inference, and Endpoints. Choose the endpoint created under Endpoints. In the upper-right, choose Delete. This will remove the endpoint from your AWS account. You will also want to make sure to stop your Notebook instance.
+
+A more extensive cleanup can be done from your Notebook instance by running the code cell labeled Environment cleanup.
+  
   
   
 ## Optional Part - Integration with Code Pipeline 
