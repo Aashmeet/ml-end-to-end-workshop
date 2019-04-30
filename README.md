@@ -16,12 +16,14 @@ The workshop is using services including Amazon S3, AWS Glue , Amazon Sagemaker 
 
 This workshop is split into three sections :
 
-Section 1 : Data Engineering -
+**Section 1 : Data Engineering** 
 In Lab 1, we will source the  dataset from external source on internet, bring it to S3 . In enterprises the equivalent data may be already  present in some RDS, NoSQL or Data-warehouse system. The data can be ingested as a one time full-load as a batch or as a real-time stream of data. Depending on the usecase, there may be a need to do both batch and stream or just a batch or a stream. In the current workshop, we will do a one full-load of data into S3.In this Lab, you will use Glue Data Catalog to define schema on the data stored in S3 . You will perform ETL on the data to prepare it for the machine learning process.
 
-Section 2 : Machine Learning - At this point you should have all you files in an AWS S3 bucket ready for Data Science work. We will use Amazon Sagemaker for model training and inference.
+**Section 2 : Machine Learning**
+At this point you should have all you files in an AWS S3 bucket ready for Data Science work. We will use Amazon Sagemaker for model training and inference.
 
-Section 3 : Inference on a Single Page Application- Once the machine learning process is complete ,you should be able to run the inference on a Single Page Application using AWS Amplify .
+**Section 3 : Inference on a Single Page Application**
+Once the machine learning process is complete ,you should be able to run the inference on a Single Page Application using AWS Amplify .
 
 The labs are **sequential** and participants will have to complete them in the sequence. Each lab has references to resources and instruction to help you complete the lab successfully.
 
@@ -33,8 +35,7 @@ There are some prerequisites to kick-off the workshop as mentioned below :
 
 # Pre-requisites
 
-## Step 1:
-Create an AWS Account 
+## Step 1: AWS Account Setup
 The code and instructions in this workshop assume only one participant is using a given AWS account at a time. If you attempt sharing an account with another participant, you will encounter naming conflicts for certain resources. You can work around this by either using a suffix in your resource names or using distinct Regions, but the instructions do not provide details on the changes required to make this work.
 You need to have an IAM user with administrative rights to be able to run the workshop. You may want to consider setting up a separate AWS account for this workshop to ensure you have administrative rights and clean up the resources once you are finished
 
@@ -43,7 +44,7 @@ You need to have an IAM user with administrative rights to be able to run the wo
 You can use US East (N. Virginia), US West (Oregon), or EU (Ireland) for this workshop. Each supports the complete set of services covered in the material. Consult the Region Table to determine which services are available in a Region.
 
 ## Step 3 :Creating a Notebook Instance
-
+The instructions of this lab are across the github Readme and the notebook itself . Make sure you read through the instructions carefully .
 
 ### Jupyter Notebooks:  A Brief Overview
 
@@ -133,7 +134,8 @@ Our goal is to predict the acceptability of a specific car, amongst the values o
 
 At the core, it is a classification problem, and we will train a machine learning model using Amazon SageMaker’s built-in  XGBoost algorithm.
 However, the dataset only contains six categorical string features – buying, maint, doors, persons, lug_boot, and safety and XGBoost can only process data that is in numerical format.
-Therefore we will pre-process the input data using SparkML StringIndexer followed by OneHotEncoder to convert it to a numerical format. We will also apply a post-processing step on the prediction result using IndexToString to 
+Therefore we will pre-process the input data using SparkML StringIndexer followed by OneHotEncoder to convert it to a numerical format. 
+We will also apply a post-processing step on the prediction result using IndexToString to 
 convert our inference output back to their original labels that correspond to the predicted condition of the car.
 
 We’ll write our pre-processing and post-processing scripts once, and apply them for processing training data using AWS Glue. 
@@ -152,7 +154,9 @@ Finally, we will deploy the pre-processing, inference, and post-processing steps
 
 Execute the steps in the notebook to set up the S3 bucket and download the required dataset as per the instructions .
 
-3. These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook .
+3. These are steps/cells 1.1 to 1.3 in the 'Car Evaluation' Jupyter notebook . 
+
+** After finsihing the steps 1.1 to 1.3 from the Jupyter notebook , follow the instruction set below .
 
 4. Once complete , look at the created S3 bucket and the contents . These would map to the screenshots below :
 
@@ -250,7 +254,8 @@ For the Glue Job to be created ,please follow the below steps :
 
  
  Here is the explanation of what the job is actually doing :
- While executing the notebook, you downloaded our preprocessor.py script, and we recommend you take the time to explore how Spark pipelines are handled. Let’s take a look at the relevant part of the code where we define and fit our Spark pipeline:
+ 
+While executing the notebook, you downloaded our preprocessor.py script, and we recommend you take the time to explore how Spark pipelines are handled. Let’s take a look at the relevant part of the code where we define and fit our Spark pipeline:
 
     # Target label
     catIndexer = StringIndexer(inputCol="cat", outputCol="label")
