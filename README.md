@@ -6,9 +6,9 @@ In the workshop, we will discuss how you can build an end to end pipeline for ma
 
 AWS provides several services to address specific needs of different stages of machine learning pipeline. The workshop have multiple labs that focus on different stages of machine learning pipeline. We will be demonstrating the overall flow and design of machine learning pipeline
 
-This is a self-paced workshop which will guide you through the complete Machine learning process for a Car evaluation use case .
+This is a **self-paced workshop** which will guide you through the complete Machine learning process for a Car evaluation use case .
 
-In this workshop we’ll use the Car Evaluation Data Set from UCI’s Machine Learning Repository. Our goal is to predict the acceptability of a specific car, amongst the values of: unacc, acc, good, and vgood. At the core, it is a classification problem and we will train a machine learning model using Amazon SageMaker’s built-in XGBoost algorithm. However, the dataset only contains six categorical string features - buying, maint, doors, persons, lug_boot, and safety and XGBoost can only process data that is in numerical format. Therefore we will pre-process the input data using SparkML StringIndexer followed by OneHotEncoder to convert it to numerical format. We will also apply a post-processing step on the prediction result using SparkML IndexToString to convert our inference output back to their original labels that correspond to the predicted condition of the car.
+In this workshop we’ll use the **Car Evaluation Data Set** from UCI’s Machine Learning Repository. Our goal is to predict the acceptability of a specific car, amongst the values of: unacc, acc, good, and vgood. At the core, it is a classification problem and we will train a machine learning model using Amazon SageMaker’s built-in XGBoost algorithm. However, the dataset only contains six categorical string features - buying, maint, doors, persons, lug_boot, and safety and XGBoost can only process data that is in numerical format. Therefore we will pre-process the input data using SparkML StringIndexer followed by OneHotEncoder to convert it to numerical format. We will also apply a post-processing step on the prediction result using SparkML IndexToString to convert our inference output back to their original labels that correspond to the predicted condition of the car.
 
 We’ll write our SparkML pre-processing and post-processing scripts once, and apply them for processing training data using AWS Glue. Then, we will serialize and capture the SparkML artifacts produced by AWS Glue to Amazon S3 using MLeap. This is so that they can be reused during inference for real-time requests using the SparkML Serving container that Amazon SageMaker provides. Finally, we will deploy the pre-processing, inference, and post-processing steps in an inference pipeline and will execute these steps in order for each real-time inference request.
 
@@ -36,12 +36,11 @@ There are some prerequisites to kick-off the workshop as mentioned below :
 ## Step 1:
 Create an AWS Account 
 The code and instructions in this workshop assume only one participant is using a given AWS account at a time. If you attempt sharing an account with another participant, you will encounter naming conflicts for certain resources. You can work around this by either using a suffix in your resource names or using distinct Regions, but the instructions do not provide details on the changes required to make this work.
-Use a personal account or create a new AWS account for this workshop rather than using an organization’s account to ensure you have full access to the necessary services and to ensure you do not leave behind any resources from the workshop.
-Find here information on how to set up your AWS Account >>
+You need to have an IAM user with administrative rights to be able to run the workshop. You may want to consider setting up a separate AWS account for this workshop to ensure you have administrative rights and clean up the resources once you are finished
 
 
 ## Step 2: Region
-Use US East (N. Virginia), US West (Oregon), or EU (Ireland) for this workshop. Each supports the complete set of services covered in the material. Consult the Region Table to determine which services are available in a Region.
+You can use US East (N. Virginia), US West (Oregon), or EU (Ireland) for this workshop. Each supports the complete set of services covered in the material. Consult the Region Table to determine which services are available in a Region.
 
 ## Step 3 :Creating a Notebook Instance
 
@@ -394,29 +393,10 @@ https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html#create-default
 
 5. Your new AWS Cloud9 environment will be created automatically, and will take a moment to complete. When it is finished, you will see the IDE in your browser
 
-6. Once the Cloud9 Environment is configured , you will need to doenload the project from the github and upload it to the Cloud9 Environment . For that extract the folder '' from the Github repository and click upload on the File Menu
-
-  6.1 Go to the GitHub project and download the zip by clicking “clone or Download “ the project .
-  
-   ![Notebook Instances](./images/githubProject.png)
-  
-  6.2 Unzip the project in your local directory. 
-  
-  6.3 For this part ,the folder you would be accessing is amplify-sagemaker-master 
-
-   ![Notebook Instances](./images/UploadProject.png)
-   
-
+6. Once your cloud9 environment is up and running, open a terminal and run the following commands.
  
-7. Make sure all the files are uploaded and then kick off the process to set up AWS Amplify environment .
-
-
- Before we begin coding, there are a few things we need to install, update, and configure in the Cloud9 environment.
+`git clone https://github.com/perima/amplify-sagemaker.git`
  
- ![Notebook Instances](./images/Cloud9Setup.png)
-
-In the Cloud9 terminal, run the following commands to install and update some software we’ll be using for this workshop:
-
 #### Update the AWS CLI
 
 ` pip install --user --upgrade awscli`
@@ -428,13 +408,25 @@ In the Cloud9 terminal, run the following commands to install and update some so
 
 #### Install the AWS Amplify CLI
 `npm install -g @aws-amplify/cli`
+cd amplify-sagemaker
 
+### Set up UI Environment
+
+The next steps will help you set up a project im an environment.The project contains the single page app, API GW/Lambda function. The flow is Amplify SPA -> API GW -> Lambda -> Sagemaker endpoint.
+
+#### Set up Amplify environment
+Set up your AWS resources the Amplify CLI: 
+
+Go to the project directory 
+
+`cd amplify-sagemaker`
 
 ### Additional set up:
 Before we start building our UI, we’ll also include Semantic UI components for React to give us components that will help make our interface look a bit nicer. 
 Go to thr actual project folder and run the below command .
 
 `npm install --save semantic-ui-react`
+`npm install –save`
 
 Now the environment is ready with all the required installs 
 
@@ -446,6 +438,10 @@ The next steps will help you set up a project im an environment.The project cont
 Set up your AWS resources the Amplify CLI:
 
 ` $ amplify init `
+Do you want to use an existing environment? No
+Choose the environment you would like to use: 'Give a unique name to the environment'
+Choose your default editor: None
+Do you want to use an AWS profile? Yes (select default from the list)
 
 This command creates new AWS backend resources (in this case a single S3 bucket to host your cloudformation templates) and pull the AWS service configurations into the app!
 Follow the prompts as shown in the below Image. Remember, even if you are implementing the ios or android version of the application, you MUST choose javascript here since the admin panel is a web app that makes calls to the backend and is seperate from the client.
@@ -459,6 +455,18 @@ Follow the prompts as shown in the below Image. Remember, even if you are implem
 Now the required cloudformation templates are set up and it is time to create the cloud resources by pushing the changes:
 
 `$ amplify push`
+
+This will push all the required changes of the API and the lambda function to AWS . Next steps is to publish and host your Single Page Application .
+
+This can be done in 2 ways :
+
+Option 1: Run locally in Cloud9
+For this to be done , execute the below command 
+`npm start`.
+
+Once this is done ,select Preview in the Cloud9 environment and run it .
+
+Option 2: Hosting on S3
 
 Execute amplify add hosting from the project's root folder and follow the prompts to create a S3 bucket (DEV) and/or a CloudFront distribution (PROD).
 
