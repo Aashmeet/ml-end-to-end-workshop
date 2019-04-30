@@ -28,8 +28,7 @@ Once the machine learning process is complete ,you should be able to run the inf
 The labs are **sequential** and participants will have to complete them in the sequence. Each lab has references to resources and instruction to help you complete the lab successfully.
 
 
-# Reference Architecture
-![Reference Architecture](./images/reference-architecture.png)
+
 There are some prerequisites to kick-off the workshop as mentioned below :
 
 
