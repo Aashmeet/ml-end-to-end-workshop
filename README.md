@@ -445,6 +445,7 @@ Before we start building our UI, we’ll also include Semantic UI components for
 Go to thr actual project folder and run the below command .
 
 `npm install --save semantic-ui-react`
+
 `npm install –save`
 
 Now the environment is ready with all the required installs 
@@ -457,9 +458,13 @@ The next steps will help you set up a project im an environment.The project cont
 Set up your AWS resources the Amplify CLI:
 
 ` $ amplify init `
+
 Do you want to use an existing environment? No
+
 Choose the environment you would like to use: 'Give a unique name to the environment'
+
 Choose your default editor: None
+
 Do you want to use an AWS profile? Yes (select default from the list)
 
 This command creates new AWS backend resources (in this case a single S3 bucket to host your cloudformation templates) and pull the AWS service configurations into the app!
@@ -481,6 +486,7 @@ This can be done in 2 ways :
 
 Option 1: Run locally in Cloud9
 For this to be done , execute the below command 
+
 `npm start`.
 
 Once this is done ,select Preview in the Cloud9 environment and run it .
@@ -505,7 +511,7 @@ Build and publish the application
 Now you should get a url for the application . Access the SPA and invoke the sagemaker endpoint with the values .
   ![Notebook Instances](./images/FinalInference.png)
   
-  Once you get the inference from the Sagemaker endpoint ,you have successfully built an end-to-end use case to build a machine learning solution for a business problem .
+ Once you get the inference from the Sagemaker endpoint ,you have successfully built an end-to-end use case to build a machine learning solution for a business problem .
   
 
 ## Cleaning up your AWS environment
